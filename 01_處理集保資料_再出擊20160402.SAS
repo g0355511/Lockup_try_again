@@ -1,12 +1,12 @@
-*   20160127  ·s¥ô°È;
+ï»¿*   20160127  æ–°ä»»å‹™;
 
-*  ­ì©l¸ê®Æ´Á¶¡¡G20020411~ 20150216;
+*  åŸå§‹è³‡æ–™æœŸé–“ï¼š20020411~ 20150216;
 
 
-libname bon 'D:\Documents\For ¨¹¯ø\';
+libname bon 'D:\Documents\For é‚¦èŒ¹\';
 
 PROC IMPORT OUT= WORK.a01 
-            DATAFILE= "D:\Documents\For ¨¹¯ø\¶°«O¸ê®Æ_1.csv" 
+            DATAFILE= "D:\Documents\For é‚¦èŒ¹\é›†ä¿è³‡æ–™_1.csv" 
             DBMS=CSV REPLACE;
      GETNAMES=NO;
      DATAROW=2; 
@@ -14,18 +14,18 @@ RUN;
 
 data a11;
    set a01;
-   rename var2=name    /*  ÃÒ¨éÂ²ºÙ  */
-          var3=date    /*  ¥Ó½Ğ¤é´Á  */
-          var4=amount  /*  ¼ÆÃB  */
-          var5=type;   /*  ¥Ó½ĞºØÃş  */
+   rename var2=name    /*  è­‰åˆ¸ç°¡ç¨±  */
+          var3=date    /*  ç”³è«‹æ—¥æœŸ  */
+          var4=amount  /*  æ•¸é¡  */
+          var5=type;   /*  ç”³è«‹ç¨®é¡  */
    var3=var3+19110000;  
-   stk=left(put(var1,6.));   /*  ÃÒ¨é¥N¸¹  */
+   stk=left(put(var1,6.));   /*  è­‰åˆ¸ä»£è™Ÿ  */
    drop var1 var6; 
 run;
 
 
 PROC IMPORT OUT= WORK.A02 
-            DATAFILE= "D:\Documents\For ¨¹¯ø\¶°«O¸ê®Æ_2.csv" 
+            DATAFILE= "D:\Documents\For é‚¦èŒ¹\é›†ä¿è³‡æ–™_2.csv" 
             DBMS=CSV REPLACE;
      GETNAMES=no;
      DATAROW=2; 
@@ -52,12 +52,12 @@ run;
 
 
 *****************;
-*  ·sªB¤Í¥[¤J    ;
+*  æ–°æœ‹å‹åŠ å…¥    ;
 *****************;
 
 /*  101/4/3  ~ 1040226*/
 data a13;
-   infile 'D:\Documents\For ¨¹¯ø\FDPTO_clean.TXT';
+   infile 'D:\Documents\For é‚¦èŒ¹\FDPTO_clean.TXT';
    input  stk   $  1-6    
           name  $  8-21
           date    23-29
@@ -72,7 +72,7 @@ quit;
 
 
 *********************;
-*  ³sµ² 3 ¥÷¶°«O¸ê®Æ ;
+*  é€£çµ 3 ä»½é›†ä¿è³‡æ–™ ;
 *********************;
 data a2;
    set a11 a12 a13;
@@ -85,20 +85,20 @@ run;
 
 
 
-/*  µ²¦X¨Ó¦Û¦Ñ®vªº 3 ¥÷¶°«O¸ê®Æ  */
+/*  çµåˆä¾†è‡ªè€å¸«çš„ 3 ä»½é›†ä¿è³‡æ–™  */
 proc sql;
    create table bon.original as
    select stk ,name ,type ,date ,amount
    from a2;
 run; 
 
-/*  ¦Ñ®vªº¥Õ¦W³æ  */
+/*  è€å¸«çš„ç™½åå–®  */
 data a001;
-   infile'D:\Documents\For ¨¹¯ø\«¸¦Ñ®vªº¥Õ¦W³æ.txt';
+   infile'D:\Documents\For é‚¦èŒ¹\å§œè€å¸«çš„ç™½åå–®.txt';
    input stk   $    1-6;
    
 data a002;
-   infile'D:\Documents\For ¨¹¯ø\«¸¦Ñ®vªº¥Õ¦W³æ_new_20150408.txt';
+   infile'D:\Documents\For é‚¦èŒ¹\å§œè€å¸«çš„ç™½åå–®_new_20150408.txt';
    input stk   $    1-6;
 run;
 data a00;
@@ -112,22 +112,22 @@ quit;
    
 
 
-/*  ±N­ì©lÀÉ®×¡A»P¦Ñ®vªº¤½¥q¼Ë¥»µ²¦X¡A¦s¦¨¥Ã¤[ÀÉbon.original02¡A¥HÅÜ¼Æteacher­ş¨Ç¬O¦Ñ®vªº¼Ë¥»  */
+/*  å°‡åŸå§‹æª”æ¡ˆï¼Œèˆ‡è€å¸«çš„å…¬å¸æ¨£æœ¬çµåˆï¼Œå­˜æˆæ°¸ä¹…æª”bon.original02ï¼Œä»¥è®Šæ•¸teacherå“ªäº›æ˜¯è€å¸«çš„æ¨£æœ¬  */
 data bon.original02;
    merge bon.original(in=w1) a00(in=w2);
    by stk;
-   if w2=1 then teacher=1;  /*  teacher=1 ¥Nªí¬O¦Ñ®v¥Õ¦W³æªº¤½¥q  */
+   if w2=1 then teacher=1;  /*  teacher=1 ä»£è¡¨æ˜¯è€å¸«ç™½åå–®çš„å…¬å¸  */
    else teacher=0;
-   if teacher=1;   /*  ¥u¨ú¥X¥Õ¦W³æ¤½¥q  */
+   if teacher=1;   /*  åªå–å‡ºç™½åå–®å…¬å¸  */
 run;   
 
 
 
 
-/*  SAS±`·í¡A©Ò¥H±q³o¶}©l  */
-/*  ­«·s¥s¥Xµ²¦X¦Ñ®v¨â¥ÀÀÉªº¥Ã¤[ÀÉ  */
+/*  SASå¸¸ç•¶ï¼Œæ‰€ä»¥å¾é€™é–‹å§‹  */
+/*  é‡æ–°å«å‡ºçµåˆè€å¸«å…©æ¯æª”çš„æ°¸ä¹…æª”  */
 
-libname bon 'D:\Documents\For ¨¹¯ø\';
+libname bon 'D:\Documents\For é‚¦èŒ¹\';
 data a21;
    set bon.original02;
    by stk name type date amount; 
@@ -137,21 +137,21 @@ data a21;
 run;
 
 
-/*  ¥HÃş«¬¡B¤é´Á§@¬°¥[Á`¼ÆÃBªº·Ç«h¡A¬G¦³¤é´ÁÅÜ¼Æ  */
+/*  ä»¥é¡å‹ã€æ—¥æœŸä½œç‚ºåŠ ç¸½æ•¸é¡çš„æº–å‰‡ï¼Œæ•…æœ‰æ—¥æœŸè®Šæ•¸  */
 proc sql;    
    create table a41 as
    select stk,
           name,
           type,
           date,
-          sum(amount) as amount1  /*   ±N¤½¥q¡G¦PÃş«¬¡]¶°«O/¸Ñ¶°«O¡^-->¦P¤@¤ÑªºªÑ¼Æ¥[Á`: amonut1   */
+          sum(amount) as amount1  /*   å°‡å…¬å¸ï¼šåŒé¡å‹ï¼ˆé›†ä¿/è§£é›†ä¿ï¼‰-->åŒä¸€å¤©çš„è‚¡æ•¸åŠ ç¸½: amonut1   */
    from a21
-   group by stk,name,date,type      /*  ¦ı¦P¤@¤Ñ¡A¤£¦PÃş«¬­n¤À¶}  */
+   group by stk,name,date,type      /*  ä½†åŒä¸€å¤©ï¼Œä¸åŒé¡å‹è¦åˆ†é–‹  */
    order by stk,name, date,type;
 quit;             
 
 
-/*  ¬İ¤½¥q¬O§_¦s¦b¦P¤@¤Ñ¡A¦P®É¦³¶°«O»P¸Ñ¶°«O  */
+/*  çœ‹å…¬å¸æ˜¯å¦å­˜åœ¨åŒä¸€å¤©ï¼ŒåŒæ™‚æœ‰é›†ä¿èˆ‡è§£é›†ä¿  */
 *data tmp0;
 *   set a41;   
 *   by stk date type;
@@ -169,29 +169,29 @@ quit;
 *   if w2;
 *run;   
    
-/*  µ²ªG¡G¦s¦b  */
+/*  çµæœï¼šå­˜åœ¨  */
 
 data tmp;
    set a41;
-   if type='±±ºŞ½T»{' then amt=amount1;
-   else if type='¸Ñ°£½T»{' then amt=amount1*(-1);
+   if type='æ§ç®¡ç¢ºèª' then amt=amount1;
+   else if type='è§£é™¤ç¢ºèª' then amt=amount1*(-1);
 run;
 proc sql;    
    create table tmp1 as
    select stk,
           name,
           date,
-          sum(amt) as amt_date  /*   ±N¦P¤@¤Ñ¶°«O©M¸Ñ°£ªºªÑ¼Æ¥[Á`¡A¦]¦³¨Ç¤½¥q¦P¤@¤Ñ¥X²{¤è¦V¬Û¤Ï¦a°Ê§@   */
+          sum(amt) as amt_date  /*   å°‡åŒä¸€å¤©é›†ä¿å’Œè§£é™¤çš„è‚¡æ•¸åŠ ç¸½ï¼Œå› æœ‰äº›å…¬å¸åŒä¸€å¤©å‡ºç¾æ–¹å‘ç›¸ååœ°å‹•ä½œ   */
    from tmp
    group by stk,name,date
    order by stk,name,date;
 quit;
 
-proc sort data=tmp1 out=tmp10 nodup;   /*  ¦s¦b­«½Æ¸ê®Æªº¼Ë¥»  */
+proc sort data=tmp1 out=tmp10 nodup;   /*  å­˜åœ¨é‡è¤‡è³‡æ–™çš„æ¨£æœ¬  */
    by stk date;
 run;   
 
-/*  ­pºâ¨C¦¸°Ê§@ªºÁ`¶qª¬ºA  */
+/*  è¨ˆç®—æ¯æ¬¡å‹•ä½œçš„ç¸½é‡ç‹€æ…‹  */
 data a410;
    set tmp10;
    by stk date;
@@ -200,17 +200,17 @@ data a410;
    retain amt_cum;
 run;   
 
-proc sql;    /*  ­pºâ¤@®a¤½¥qªº¶°«O©M¸Ñ°£­Ó§OªºÁ`¶q¡]µL¤é´Á¡^   */
+proc sql;    /*  è¨ˆç®—ä¸€å®¶å…¬å¸çš„é›†ä¿å’Œè§£é™¤å€‹åˆ¥çš„ç¸½é‡ï¼ˆç„¡æ—¥æœŸï¼‰   */
    create table a42 as
    select stk,
           name,
           type,
-          sum(amount) as amount2   /*   ±N¦P¤½¥q¡B¦PÃş«¬ªº¼ÆÃB¥[Á`: amonut2   */
+          sum(amount) as amount2   /*   å°‡åŒå…¬å¸ã€åŒé¡å‹çš„æ•¸é¡åŠ ç¸½: amonut2   */
    from a21
    group by stk,name,type;
 quit;   
 
-/*  ´ú¸Õ¡G¶°«O¬O§_µ¥©ó¸Ñ°£¶°«O  */
+/*  æ¸¬è©¦ï¼šé›†ä¿æ˜¯å¦ç­‰æ–¼è§£é™¤é›†ä¿  */
 proc sort data=a42;
    by stk type;
 run;   
@@ -228,38 +228,38 @@ run;
 data tmp2;
    set tmp1;
    if n=2;
-   if amount2=lag_amt then equal=1;   /*  equal=1¡A¤½¥qªº¶°«O§¡¸Ñ¦^¨Ó  */
-   else equal=0;   /*  equal=0¡A¤½¥qªº¶°«O©M¸Ñ¶°«Oªº¼Æ¶q¤£¦P¡A¥i¯à®É¶¡¥¼¨ì  */
+   if amount2=lag_amt then equal=1;   /*  equal=1ï¼Œå…¬å¸çš„é›†ä¿å‡è§£å›ä¾†  */
+   else equal=0;   /*  equal=0ï¼Œå…¬å¸çš„é›†ä¿å’Œè§£é›†ä¿çš„æ•¸é‡ä¸åŒï¼Œå¯èƒ½æ™‚é–“æœªåˆ°  */
 run;
 
 data tmp3;
    merge tmp1 tmp2;
    by stk;
-   if equal=0;    /*  IPO«á¡A¥¼´¿§¹¥ş¸Ñ°£³¬Âê  */
+   if equal=0;    /*  IPOå¾Œï¼Œæœªæ›¾å®Œå…¨è§£é™¤é–‰é–  */
 run;
 
 
-/*  ¼Ë¥»´Á¶¡¡A¬O§_§¹¥ş¸Ñ°£  */
+/*  æ¨£æœ¬æœŸé–“ï¼Œæ˜¯å¦å®Œå…¨è§£é™¤  */
 
 data tmp411;
    set a410;
-   if amt_cum=0;     /*  ¥ı¨ú¦³§¹¥ş¸Ñ°£ºŞ¨îªº¼Ë¥»  */
+   if amt_cum=0;     /*  å…ˆå–æœ‰å®Œå…¨è§£é™¤ç®¡åˆ¶çš„æ¨£æœ¬  */
 data tmp412;
    set tmp411;
    by stk date;
-   if first.stk;     /*  ¨ú²Ä¤@­Ó§¹¥ş¸Ñ°£¶°«OºŞ¨îªº¤é´Á  */
+   if first.stk;     /*  å–ç¬¬ä¸€å€‹å®Œå…¨è§£é™¤é›†ä¿ç®¡åˆ¶çš„æ—¥æœŸ  */
    keep stk date;
 data tmp413;
    merge a410 tmp412(in=w2 rename=(date=date2));
    by stk; 
-   if date<=date2 then before_IPO=1;    /*  before_IPO=1 ªí ²Ä¤@¦¸§¹¥ş¸Ñ°£ºŞ¨î¤é¤§«eªº¼Ë¥» */
+   if date<=date2 then before_IPO=1;    /*  before_IPO=1 è¡¨ ç¬¬ä¸€æ¬¡å®Œå…¨è§£é™¤ç®¡åˆ¶æ—¥ä¹‹å‰çš„æ¨£æœ¬ */
    else before_IPO=0;
 run;  
 
-/*  Æ[¹îµ²ªG¡G'D:\Documents\For ¨¹¯ø\meeting21050410.sas' ¤¤  */ 
+/*  è§€å¯Ÿçµæœï¼š'D:\Documents\For é‚¦èŒ¹\meeting21050410.sas' ä¸­  */ 
 
 
-data tmp4;   /*  ´N¬O¥¦¤F  */
+data tmp4;   /*  å°±æ˜¯å®ƒäº†  */
 *   merge tmp413(in=w2 drop=date2) tmp2(keep=stk equal in=w1) ;
    merge tmp413(in=w2 rename=(date2=date_ulall)) tmp2(keep=stk equal in=w1) ;
    by stk;
@@ -294,7 +294,7 @@ data tmp401&i;
 run;
 %end;
 
-data tmp402;   /*  ¸Ñ°£³¬Âêªº®É¶¡  */
+data tmp402;   /*  è§£é™¤é–‰é–çš„æ™‚é–“  */
    merge tmp4011-tmp4017;
    by stk;
 run;
@@ -311,7 +311,7 @@ run;
 data tmp404;
    set tmp403;
    if equal=1 and before_IPO=0 then delete;   /*  */
-   if date_ulall=. then before_IPO=2;   /*  before_IPO=2 ªí¥Ü¦³¸Ñ°£¡A«o¥¼§¹¥ş¸Ñ°£³¬Âêªº¤½¥q  */
+   if date_ulall=. then before_IPO=2;   /*  before_IPO=2 è¡¨ç¤ºæœ‰è§£é™¤ï¼Œå»æœªå®Œå…¨è§£é™¤é–‰é–çš„å…¬å¸  */
 run;
 
 data tmp405;
@@ -339,23 +339,23 @@ quit;
            
 --->20160217;           
            
-/*  ¨ú¥X ¡u¥¼¡v§¹¥ş¸Ñ°£¶°«O¤½¥qªº³Ì«á¤@µ§¶°«O¸ê°T  */
+/*  å–å‡º ã€Œæœªã€å®Œå…¨è§£é™¤é›†ä¿å…¬å¸çš„æœ€å¾Œä¸€ç­†é›†ä¿è³‡è¨Š  */
 *data tmp41;
 *   set tmp4;
 *   where equal=0;
 *   by stk;
 *   if last.stk;   
 *run;
-/*  ps.³£±µªñ¼Ë¥»§ÀÁn  */
+/*  ps.éƒ½æ¥è¿‘æ¨£æœ¬å°¾è²  */
   
-/*  °£¶°«O¡B¸Ñ¶°«O¡A¬O§_¦³²Ä¤TºØ¥H¤Wªºª¬ªp  */
+/*  é™¤é›†ä¿ã€è§£é›†ä¿ï¼Œæ˜¯å¦æœ‰ç¬¬ä¸‰ç¨®ä»¥ä¸Šçš„ç‹€æ³  */
 *data tmp3;
 *   set tmp1;
 *   if n>2;
-*run;   /*  µ²ªG¡G¨S¦³  */
+*run;   /*  çµæœï¼šæ²’æœ‰  */
 
 
-/*  ¥H¤U¼È¤£³B²z  */
+/*  ä»¥ä¸‹æš«ä¸è™•ç†  */
 *proc sort data=a410;
 *   by stk date;
 *quit;
@@ -376,12 +376,12 @@ quit;
    
 *data tmp4;
 *   set tmp3;
-*   if amount2=. then onlylock=1;   /*  onlylock=1:¥u¦³¶°«O¸ê®Æªº¤½¥q  */
-*   else onlylock=0;  /*  onlylock=0: ¦³¶°«O¡B¸Ñ¶°«O¸ê®Æªº¤½¥q  */
+*   if amount2=. then onlylock=1;   /*  onlylock=1:åªæœ‰é›†ä¿è³‡æ–™çš„å…¬å¸  */
+*   else onlylock=0;  /*  onlylock=0: æœ‰é›†ä¿ã€è§£é›†ä¿è³‡æ–™çš„å…¬å¸  */
 *   y=int(date/10000);
 *   m=int((date-y*10000)/100);
 *   d=date-y*10000-m*100;
-*   mdy=mdy(m,d,y);       /*  ¶°«O©Î«D¶°«Oªº¨Æ¥ó¤éMDY  */
+*   mdy=mdy(m,d,y);       /*  é›†ä¿æˆ–éé›†ä¿çš„äº‹ä»¶æ—¥MDY  */
 *   drop y m d;
 *run; 
 
